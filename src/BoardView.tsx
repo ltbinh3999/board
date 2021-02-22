@@ -25,28 +25,46 @@ export default function BoardView({ boardId }: Props): ReactElement {
     }
 
     if (destination.droppableId === source.droppableId) {
+      //Move inside 1 list
       if (destination.index === source.index) {
         return;
       } else {
         const list = data.lists.get(source.droppableId);
         if (list) {
-          console.log(draggableId, source.index, destination.index);
           const taskId = Array.from(list.taskIds);
-          console.log(taskId);
           taskId.splice(source.index, 1);
-          console.log(taskId);
           taskId.splice(destination.index, 0, draggableId);
-          console.log(taskId);
 
           lists.set(source.droppableId, {
             name: list.name,
             id: list.id,
             taskIds: taskId,
           });
-          console.log(lists);
           const map = new Map(lists);
           setData({ lists: map, tasks });
         }
+      }
+    } else {
+      //Move from 1 list to another
+      const startList = data.lists.get(source.droppableId);
+      const finishList = data.lists.get(destination.droppableId);
+      if (startList && finishList) {
+        const startTaskIds = Array.from(startList.taskIds);
+        const finishTaskIds = Array.from(finishList.taskIds);
+        startTaskIds.splice(source.index, 1);
+        finishTaskIds.splice(destination.index, 0, draggableId);
+        lists.set(source.droppableId, {
+          name: startList.name,
+          id: startList.id,
+          taskIds: startTaskIds,
+        });
+        lists.set(destination.droppableId, {
+          name: finishList.name,
+          id: finishList.id,
+          taskIds: finishTaskIds,
+        });
+        const map = new Map(lists);
+        setData({ lists: map, tasks });
       }
     }
   };
