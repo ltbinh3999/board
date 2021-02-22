@@ -1,33 +1,58 @@
+import React from "react";
 export interface Task {
+  id: string;
   name: string;
-  subTasks?: Task[];
+  subTasks: string[];
   date?: Date;
 }
+
 export interface List {
+  id: string;
   name: string;
-  data: Task[];
+  taskIds: string[];
 }
 export interface Board {
+  id: string;
   name: string;
-  data: List[];
+  listIds: string[];
+  tasks: Map<string, Task>;
+  lists: Map<string, List>;
 }
-function getList(): List {
+
+function getBoard(boardId: string) {
+  const addSubTask = (taskId: string, subTasksId: string) => {
+    tasks.get(taskId)?.subTasks.push(subTasksId);
+  };
+  const taskArr: Task[] = Array.from(Array(10).keys()).map((x) => ({
+    id: x.toString(),
+    name: `task${x}`,
+    subTasks: [],
+  }));
+  const tasks = new Map<string, Task>();
+  taskArr.forEach((x) => {
+    tasks.set(x.id, x);
+  });
+  addSubTask("0", "1");
+  addSubTask("0", "2");
+  addSubTask("0", "3");
+  addSubTask("1", "4");
+  addSubTask("1", "5");
+  addSubTask("6", "7");
+  const lists = new Map<string, List>();
+  lists.set("0", { id: "0", name: "List 0", taskIds: ["0", "9"] });
+  lists.set("1", { id: "1", name: "List 1", taskIds: ["6", "8"] });
+
   return {
-    name: "Sample List",
-    data: [
-      { name: "Task 1" },
-      { name: "Task 2", subTasks: [{ name: "Task 4" }, { name: "Task 5" }] },
-      {
-        name: "Task 3",
-        subTasks: [{ name: "Task 6", subTasks: [{ name: "Task 7" }] }],
-      },
-    ],
+    id: "1",
+    name: "Board 1",
+    listIds: ["0", "1"],
+    tasks,
+    lists,
   };
 }
-function getBoard(): Board {
-  return {
-    name: "Sample Board",
-    data: [getList(), getList(), getList()],
-  };
-}
-export { getBoard, getList };
+const DataContext = React.createContext({
+  lists: new Map<string, List>(),
+  tasks: new Map<string, Task>(),
+});
+const DataProvider = DataContext.Provider;
+export { getBoard, DataContext, DataProvider };

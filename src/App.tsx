@@ -1,7 +1,11 @@
 import React from "react";
-import { getBoard } from "./data";
+import BoardView from "./BoardView";
 function App() {
-  return <div>Hello Wolrd!</div>;
+  return (
+    <div>
+      <BoardView boardId="1" />
+    </div>
+  );
 }
 
 export default App;
