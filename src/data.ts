@@ -50,7 +50,7 @@ function getBoard(boardId: string) {
   return {
     id: "b1",
     name: "Board 1",
-    listIds: ["l0", "l1"],
+    listIds: ["l0", "l1", "l2"],
     tasks,
     lists,
   };

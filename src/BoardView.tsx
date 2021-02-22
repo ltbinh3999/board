@@ -1,27 +1,36 @@
-import React, { ReactElement, useState } from "react";
-import { DataProvider, getBoard } from "./data";
+import React, { ReactElement, useState, useEffect } from "react";
+import { DataProvider, getBoard, List, Task } from "./data";
 import ListView from "./ListView";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 interface Props {
   boardId: string;
 }
 
 export default function BoardView({ boardId }: Props): ReactElement {
-  const { name, lists, tasks, listIds } = getBoard(boardId);
-  const [data, setData] = useState({ lists, tasks });
-  const listsViews = Array.from(lists.values(), (v, k) => (
-    <ListView key={v.id} id={v.id} />
-  ));
+  useEffect(() => {
+    const { name, lists, tasks, listIds } = getBoard(boardId);
+    setData({ lists, tasks, listIds });
+  }, []);
+  const [data, setData] = useState({
+    lists: new Map<string, List>(),
+    tasks: new Map<string, Task>(),
+    listIds: new Array<string>(),
+  });
+
   const onDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
 
     if (!destination) {
       return;
+    }
+
+    if (type === "column") {
+      const listId = Array.from(data.listIds);
+      listId.splice(source.index, 1);
+      listId.splice(destination.index, 0, draggableId);
+      console.log(listId);
+
+      setData({ lists: data.lists, tasks: data.tasks, listIds: listId });
     }
 
     if (destination.droppableId === source.droppableId) {
@@ -40,8 +49,8 @@ export default function BoardView({ boardId }: Props): ReactElement {
             id: list.id,
             taskIds: taskId,
           });
-          const map = new Map(lists);
-          setData({ lists: map, tasks });
+          const map = new Map(data.lists);
+          setData({ lists: map, tasks: data.tasks, listIds: data.listIds });
         }
       }
     } else {
@@ -64,15 +73,31 @@ export default function BoardView({ boardId }: Props): ReactElement {
           taskIds: finishTaskIds,
         });
         const map = new Map(data.lists);
-        setData({ lists: map, tasks });
+        setData({ lists: map, tasks: data.tasks, listIds: data.listIds });
       }
     }
   };
+
   return (
-    <div style={{ display: "flex", justifyContent: "space-around" }}>
+    <div>
       {
         <DataProvider value={data}>
-          <DragDropContext onDragEnd={onDragEnd}>{listsViews}</DragDropContext>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="all" direction="horizontal" type="column">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-around" }}
+                  >
+                    {data.listIds.map((x, i) => (
+                      <ListView key={x} id={x} index={i} />
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </DataProvider>
       }
     </div>
