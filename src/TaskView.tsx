@@ -1,30 +1,40 @@
 import React, { ReactElement, useContext } from "react";
 import { DataContext } from "./data";
-
+import { Draggable } from "react-beautiful-dnd";
 interface Props {
   id: string;
   depth: number;
+  index: number;
 }
-
-export default function TaskView({ id, depth }: Props): ReactElement {
+export default function TaskView({ id, depth, index }: Props): ReactElement {
   const data = useContext(DataContext);
   const task = data.tasks.get(id);
-  if (task) {
-    const { name, subTasks } = task;
-    const subTaskViews = subTasks.map((x) => (
-      <TaskView key={x} id={x} depth={depth + 1} />
-    ));
+  const subTaskViews = task?.subTasks.map((x, i) => (
+    <TaskView key={x} id={x} depth={depth + 1} index={i} />
+  ));
+  if (depth === 0) {
     return (
-      <div
-        style={{
-          marginLeft: depth * 10,
-          border: depth === 0 ? "1px black solid" : "",
-        }}
-      >
-        <div>{name}</div>
-        <div>{subTaskViews}</div>
+      <Draggable draggableId={id} index={index}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <div style={{ border: "1px solid black " }}>
+              {task?.name}
+              {subTaskViews}
+            </div>
+          </div>
+        )}
+      </Draggable>
+    );
+  } else {
+    return (
+      <div style={{ marginLeft: depth * 10 }}>
+        {task?.name}
+        {subTaskViews}
       </div>
     );
   }
-  return <div></div>;
 }
