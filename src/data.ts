@@ -23,7 +23,7 @@ function getBoard(boardId: string) {
   const addSubTask = (taskId: string, subTasksId: string) => {
     tasks.get(taskId)?.subTasks.push(subTasksId);
   };
-  const taskArr: Task[] = Array.from(Array(12).keys()).map((x) => ({
+  const taskArr: Task[] = Array.from(Array(15).keys()).map((x) => ({
     id: x.toString(),
     name: `task${x}`,
     subTasks: [],
@@ -45,6 +45,7 @@ function getBoard(boardId: string) {
     taskIds: ["0", "9", "10", "11"],
   });
   lists.set("l1", { id: "l1", name: "List 1", taskIds: ["6", "8"] });
+  lists.set("l2", { id: "l2", name: "List 2", taskIds: ["12", "13", "14"] });
 
   return {
     id: "b1",

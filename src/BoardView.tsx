@@ -35,7 +35,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
           taskId.splice(source.index, 1);
           taskId.splice(destination.index, 0, draggableId);
 
-          lists.set(source.droppableId, {
+          data.lists.set(source.droppableId, {
             name: list.name,
             id: list.id,
             taskIds: taskId,
@@ -53,17 +53,17 @@ export default function BoardView({ boardId }: Props): ReactElement {
         const finishTaskIds = Array.from(finishList.taskIds);
         startTaskIds.splice(source.index, 1);
         finishTaskIds.splice(destination.index, 0, draggableId);
-        lists.set(source.droppableId, {
+        data.lists.set(source.droppableId, {
           name: startList.name,
           id: startList.id,
           taskIds: startTaskIds,
         });
-        lists.set(destination.droppableId, {
+        data.lists.set(destination.droppableId, {
           name: finishList.name,
           id: finishList.id,
           taskIds: finishTaskIds,
         });
-        const map = new Map(lists);
+        const map = new Map(data.lists);
         setData({ lists: map, tasks });
       }
     }
