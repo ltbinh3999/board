@@ -21,7 +21,13 @@ export default function TaskView({ id, depth, index }: Props): ReactElement {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <div style={{ border: "1px solid black " }}>
+            <div
+              style={{
+                border: "1px solid black ",
+                padding: "5px",
+                marginTop: "10px",
+              }}
+            >
               {task?.name}
               {subTaskViews}
             </div>

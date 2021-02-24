@@ -86,9 +86,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
             <Droppable droppableId="all" direction="horizontal" type="column">
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-around" }}
-                  >
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                     {data.listIds.map((x, i) => (
                       <ListView key={x} id={x} index={i} />
                     ))}
