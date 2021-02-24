@@ -1,13 +1,14 @@
 import React, { ReactElement, useContext } from "react";
-import { DataContext } from "./data";
+import { DataContext } from "../data";
 import TaskView from "./TaskView";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 interface Props {
   id: string;
   index: number;
+  setF: any;
 }
 
-export default function ListView({ id, index }: Props): ReactElement {
+export default function ListView({ id, index, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const listName = data.lists.get(id)?.name;
 
@@ -39,7 +40,13 @@ export default function ListView({ id, index }: Props): ReactElement {
                     }}
                   >
                     {data.lists.get(id)?.taskIds.map((x, i) => (
-                      <TaskView key={x} id={x} depth={0} index={i} />
+                      <TaskView
+                        key={x}
+                        id={x}
+                        depth={0}
+                        index={i}
+                        setF={setF}
+                      />
                     ))}
                     {provided.placeholder}
                   </div>

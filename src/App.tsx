@@ -1,5 +1,5 @@
 import React from "react";
-import BoardView from "./BoardView";
+import BoardView from "./view/BoardView";
 function App() {
   return (
     <div>

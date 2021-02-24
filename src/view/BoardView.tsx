@@ -1,7 +1,8 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { DataProvider, getBoard, List, Task } from "./data";
+import { DataProvider, getBoard, List, Task } from "../data";
 import ListView from "./ListView";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import TaskDetailView from "./TaskDetailView";
 interface Props {
   boardId: string;
 }
@@ -16,6 +17,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
     tasks: new Map<string, Task>(),
     listIds: new Array<string>(),
   });
+  const [taskId, setTaskId] = useState("");
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -28,7 +30,6 @@ export default function BoardView({ boardId }: Props): ReactElement {
       const listId = Array.from(data.listIds);
       listId.splice(source.index, 1);
       listId.splice(destination.index, 0, draggableId);
-      console.log(listId);
 
       setData({ lists: data.lists, tasks: data.tasks, listIds: listId });
     }
@@ -77,27 +78,27 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     }
   };
+  const setF = { setTaskId };
 
   return (
     <div>
-      {
-        <DataProvider value={data}>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="all" direction="horizontal" type="column">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    {data.listIds.map((x, i) => (
-                      <ListView key={x} id={x} index={i} />
-                    ))}
-                    {provided.placeholder}
-                  </div>
+      <DataProvider value={data}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="all" direction="horizontal" type="column">
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  {data.listIds.map((x, i) => (
+                    <ListView key={x} id={x} index={i} setF={setF} />
+                  ))}
+                  {provided.placeholder}
                 </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </DataProvider>
-      }
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {taskId !== "" && <TaskDetailView id={taskId} setF={setF} />}
+      </DataProvider>
     </div>
   );
 }
