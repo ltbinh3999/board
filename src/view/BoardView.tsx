@@ -9,15 +9,42 @@ interface Props {
 
 export default function BoardView({ boardId }: Props): ReactElement {
   useEffect(() => {
-    const { name, lists, tasks, listIds } = getBoard(boardId);
+    const {
+      name,
+      lists,
+      tasks,
+      listIds,
+      taskIdCounter,
+      listIdCounter,
+    } = getBoard(boardId);
     setData({ lists, tasks, listIds });
+    setTaskIdCounter(taskIdCounter);
+    setListIdCounter(listIdCounter);
   }, []);
+
   const [data, setData] = useState({
     lists: new Map<string, List>(),
     tasks: new Map<string, Task>(),
     listIds: new Array<string>(),
   });
+  const [taskIdCounter, setTaskIdCounter] = useState(0);
+  const [listIdCounter, setListIdCounter] = useState(0);
+  const [isAdd, setIsAdd] = useState("");
   const [taskId, setTaskId] = useState("");
+
+  const setF = { setTaskId, setIsAdd };
+
+  const taskF = (task: Task, type: string) => {
+    const tasks = new Map(data.tasks);
+    tasks.set(task.id, task);
+    const lists = new Map(data.lists);
+    lists.get(isAdd)?.taskIds.push(task.id);
+    setData({ lists: data.lists, tasks, listIds: data.listIds });
+    setTaskIdCounter((taskIdCounter) => taskIdCounter + 1);
+    console.log("added");
+  };
+
+  const listF = (list: List, type: string) => {};
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -78,11 +105,12 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     }
   };
-  const setF = { setTaskId };
 
   return (
     <div>
-      <DataProvider value={data}>
+      <DataProvider
+        value={{ ...data, taskIdCounter, listIdCounter, taskF, listF }}
+      >
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="all" direction="horizontal" type="column">
             {(provided) => (
@@ -97,7 +125,10 @@ export default function BoardView({ boardId }: Props): ReactElement {
             )}
           </Droppable>
         </DragDropContext>
-        {taskId !== "" && <TaskDetailView id={taskId} setF={setF} />}
+        {taskId !== "" && (
+          <TaskDetailView id={taskId} setF={setF} isAdd={isAdd} />
+        )}
+        {isAdd && <TaskDetailView id={taskId} setF={setF} isAdd={isAdd} />}
       </DataProvider>
     </div>
   );

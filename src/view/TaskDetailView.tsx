@@ -1,15 +1,29 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 import { Task, DataContext } from "../data";
 
 interface Props {
   id: string;
   setF: any;
+  isAdd: string;
 }
 
-export default function TaskDetailView({ id, setF }: Props): ReactElement {
+export default function TaskDetailView({
+  id,
+  setF,
+  isAdd,
+}: Props): ReactElement {
   const data = useContext(DataContext);
   const task = data.tasks.get(id);
-
+  const [taskName, setTaskName] = useState(isAdd !== "" ? "" : task?.name);
+  const addTask = () => {
+    const task = {
+      name: taskName as string,
+      subTasks: [],
+      id: (data.taskIdCounter + 1).toString() as string,
+    };
+    data.taskF(task, "add");
+    setF.setIsAdd(false);
+  };
   return (
     <div
       style={{
@@ -34,8 +48,18 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           setF.setTaskId("");
         }}
       />
-      <div>Task name: {task?.name}</div>
-      <div>Sub tasks: {JSON.stringify(task?.subTasks)}</div>
+      <div>
+        <input
+          type="text"
+          name=""
+          id=""
+          value={taskName}
+          onChange={(e) => {
+            setTaskName(e.target.value);
+          }}
+        />
+        {isAdd && <button onClick={addTask}>Add</button>}
+      </div>
     </div>
   );
 }
