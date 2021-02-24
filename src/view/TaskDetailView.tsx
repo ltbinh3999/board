@@ -19,8 +19,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
         position: "fixed",
         top: "50vh",
         left: "50vw",
-        marginLeft: "-25vw",
-        marginTop: "-25vh",
+        margin: "-25vh 0 0 -25vw",
       }}
     >
       <input
@@ -29,8 +28,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
         style={{
           height: "1em",
           display: "block",
-          marginLeft: "auto",
-          marginRight: "0",
+          margin: "0 0 0 auto",
         }}
         onClick={() => {
           setF.setTaskId("");

@@ -2,6 +2,7 @@ import React, { ReactElement, useContext } from "react";
 import { DataContext } from "../data";
 import TaskView from "./TaskView";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import "../css/ListView.css";
 interface Props {
   id: string;
   index: number;
@@ -18,8 +19,7 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
         <div {...provided.draggableProps} ref={provided.innerRef}>
           <div
             style={{
-              marginLeft: "10px",
-              marginRight: "10px",
+              margin: "0 1vw 0 1vw",
               minWidth: "15vw",
             }}
           >
@@ -49,6 +49,18 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                       />
                     ))}
                     {provided.placeholder}
+                    <div className="AddTaskButton">
+                      <img
+                        src="add.png"
+                        alt="add button"
+                        style={{
+                          height: "1em",
+                          width: "1em",
+                          display: "block",
+                          margin: "1vh auto 0 auto",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               )}

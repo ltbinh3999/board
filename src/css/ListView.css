@@ -1,0 +1,8 @@
+.AddTaskButton {
+  opacity: 0.25;
+  cursor: pointer;
+  user-select: none;
+}
+.AddTaskButton:hover {
+  opacity: 1;
+}

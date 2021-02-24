@@ -31,7 +31,7 @@ export default function TaskView({
               style={{
                 border: "1px solid black ",
                 padding: "5px",
-                marginTop: "10px",
+                marginTop: "1vh",
                 cursor: "pointer",
               }}
               onClick={() => {
