@@ -52,6 +52,10 @@ export default function BoardView({ boardId }: Props): ReactElement {
     const listIds = [...data.listIds];
     if (list) {
       lists.set(id, list);
+      if (id === `l${listIdC}`) {
+        listIds.push(id);
+        setListIdC((listIdC) => listIdC + 1);
+      }
     } else {
       lists.delete(id);
       listIds.splice(listIds.indexOf(id), 1);
@@ -132,7 +136,20 @@ export default function BoardView({ boardId }: Props): ReactElement {
                   {data.listIds.map((x, i) => (
                     <ListView key={x} id={x} index={i} setF={setF} />
                   ))}
-                  {provided.placeholder}
+                  {provided.placeholder}{" "}
+                  <input
+                    type="image"
+                    src="add.png"
+                    alt="add button"
+                    style={{
+                      height: "1em",
+                      display: "block",
+                    }}
+                    onClick={() => {
+                      setF.setListId(`l${listIdC}`);
+                      setF.setIsList(true);
+                    }}
+                  />
                 </div>
               </div>
             )}
