@@ -9,17 +9,10 @@ interface Props {
 
 export default function BoardView({ boardId }: Props): ReactElement {
   useEffect(() => {
-    const {
-      name,
-      lists,
-      tasks,
-      listIds,
-      taskIdCounter,
-      listIdCounter,
-    } = getBoard(boardId);
+    const { name, lists, tasks, listIds, listIdC, taskIdC } = getBoard(boardId);
     setData({ lists, tasks, listIds });
-    setTaskIdCounter(taskIdCounter);
-    setListIdCounter(listIdCounter);
+    setTaskIdC(taskIdC);
+    setListIdC(listIdC);
   }, []);
 
   const [data, setData] = useState({
@@ -31,21 +24,9 @@ export default function BoardView({ boardId }: Props): ReactElement {
   const [listIdCounter, setListIdCounter] = useState(0);
   const [isAdd, setIsAdd] = useState("");
   const [taskId, setTaskId] = useState("");
-
-  const setF = { setTaskId, setIsAdd };
-
-  const taskF = (task: Task, type: string) => {
-    const tasks = new Map(data.tasks);
-    tasks.set(task.id, task);
-    const lists = new Map(data.lists);
-    lists.get(isAdd)?.taskIds.push(task.id);
-    setData({ lists: data.lists, tasks, listIds: data.listIds });
-    setTaskIdCounter((taskIdCounter) => taskIdCounter + 1);
-    console.log("added");
-  };
-
-  const listF = (list: List, type: string) => {};
-
+  const [listId, setListId] = useState("");
+  const [taskIdC, setTaskIdC] = useState(0);
+  const [listIdC, setListIdC] = useState(0);
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
@@ -105,12 +86,28 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     }
   };
+  function taskF(id: string, task?: Task) {
+    const tasks = new Map(data.tasks);
+    const lists = new Map(data.lists);
+    if (task) {
+      tasks.set(id.toString(), task);
+      if (listId !== "") {
+        lists.get(listId)?.taskIds.push(id.toString());
+        setTaskIdC((taskIdC) => taskIdC + 1);
+      }
+    } else {
+      tasks.delete(id);
+      const list = lists.get(listId)?.taskIds as string[];
+      list.splice(list.indexOf(id), 1);
+    }
+
+    setData({ tasks, lists, listIds: data.listIds });
+  }
+  const setF = { setTaskId, taskF, setListId };
 
   return (
     <div>
-      <DataProvider
-        value={{ ...data, taskIdCounter, listIdCounter, taskF, listF }}
-      >
+      <DataProvider value={{ ...data, taskIdC, listIdC }}>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="all" direction="horizontal" type="column">
             {(provided) => (

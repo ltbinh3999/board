@@ -6,17 +6,26 @@ interface Props {
   depth: number;
   index: number;
   setF: any;
+  listId: string;
 }
 export default function TaskView({
   id,
   depth,
   index,
   setF,
+  listId,
 }: Props): ReactElement {
   const data = useContext(DataContext);
   const task = data.tasks.get(id);
   const subTaskViews = task?.subTasks.map((x, i) => (
-    <TaskView key={x} id={x} depth={depth + 1} index={i} setF={setF} />
+    <TaskView
+      key={x}
+      id={x}
+      depth={depth + 1}
+      index={i}
+      setF={setF}
+      listId={listId}
+    />
   ));
   if (depth === 0) {
     return (
@@ -36,6 +45,7 @@ export default function TaskView({
               }}
               onClick={() => {
                 setF.setTaskId(id);
+                setF.setListId(listId);
               }}
             >
               {task?.name}

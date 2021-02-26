@@ -13,17 +13,9 @@ export default function TaskDetailView({
   isAdd,
 }: Props): ReactElement {
   const data = useContext(DataContext);
-  const task = data.tasks.get(id);
-  const [taskName, setTaskName] = useState(isAdd !== "" ? "" : task?.name);
-  const addTask = () => {
-    const task = {
-      name: taskName as string,
-      subTasks: [],
-      id: (data.taskIdCounter + 1).toString() as string,
-    };
-    data.taskF(task, "add");
-    setF.setIsAdd(false);
-  };
+  const t = data.tasks.get(id);
+  const [task, setTask] = useState(t ? t : { name: "", subTasks: [] });
+
   return (
     <div
       style={{
@@ -45,21 +37,29 @@ export default function TaskDetailView({
           margin: "0 0 0 auto",
         }}
         onClick={() => {
+          setF.taskF(id, task);
           setF.setTaskId("");
         }}
       />
-      <div>
-        <input
-          type="text"
-          name=""
-          id=""
-          value={taskName}
-          onChange={(e) => {
-            setTaskName(e.target.value);
+      <input
+        type="text"
+        value={task.name}
+        onChange={(e) => {
+          const newtask = { ...task };
+          newtask.name = e.target.value;
+          setTask(newtask);
+        }}
+      />
+      {t && (
+        <button
+          onClick={() => {
+            setF.taskF(id);
+            setF.setTaskId("");
           }}
-        />
-        {isAdd && <button onClick={addTask}>Add</button>}
-      </div>
+        >
+          DELETE
+        </button>
+      )}
     </div>
   );
 }
