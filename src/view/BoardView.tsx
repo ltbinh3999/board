@@ -3,6 +3,7 @@ import { DataProvider, getBoard, List, Task } from "../data";
 import ListView from "./ListView";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import TaskDetailView from "./TaskDetailView";
+import ListDetailView from "./ListDetailView";
 interface Props {
   boardId: string;
 }
@@ -26,7 +27,9 @@ export default function BoardView({ boardId }: Props): ReactElement {
   const [taskIdC, setTaskIdC] = useState(0);
   const [listIdC, setListIdC] = useState(0);
   const [isAdd, setIsAdd] = useState(false);
-  function taskF(id: string, task?: Task) {
+  const [isList, setIsList] = useState(false);
+
+  const taskF = (id: string, task?: Task) => {
     const tasks = new Map(data.tasks);
     const lists = new Map(data.lists);
     if (task) {
@@ -42,8 +45,21 @@ export default function BoardView({ boardId }: Props): ReactElement {
     }
 
     setData({ tasks, lists, listIds: data.listIds });
-  }
-  const setF = { setTaskId, taskF, setListId, setIsAdd };
+  };
+
+  const listF = (id: string, list?: List) => {
+    const lists = new Map(data.lists);
+    const listIds = [...data.listIds];
+    if (list) {
+      lists.set(id, list);
+    } else {
+      lists.delete(id);
+      listIds.splice(listIds.indexOf(id), 1);
+    }
+    setData({ tasks: data.tasks, lists, listIds });
+  };
+
+  const setF = { setTaskId, taskF, setListId, setIsAdd, listF, setIsList };
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -123,6 +139,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
           </Droppable>
         </DragDropContext>
         {taskId !== "" && <TaskDetailView id={taskId} setF={setF} />}
+        {listId !== "" && isList && <ListDetailView id={listId} setF={setF} />}
       </DataProvider>
     </div>
   );

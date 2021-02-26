@@ -5,17 +5,11 @@ interface Props {
   id: string;
   setF: any;
 }
-
-export default function TaskDetailView({ id, setF }: Props): ReactElement {
+//FIXME: Refactor this and TaskDetailView to a DetailView component.
+export default function ListDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
-  const t = data.tasks.get(id);
-  const [task, setTask] = useState(t ? t : { name: "", subTasks: [] });
-  const submit = () => {
-    setF.taskF(id, task);
-    setF.setTaskId("");
-    setF.setListId("");
-    setF.setIsAdd(false);
-  };
+  const t = data.lists.get(id);
+  const [task, setTask] = useState(t ? t : { id: "", name: "", taskIds: [] });
   return (
     <div
       style={{
@@ -36,29 +30,22 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           display: "block",
           margin: "0 0 0 auto",
         }}
-        onClick={() => {
-          submit();
-        }}
+        onClick={() => {}}
       />
       <input
         type="text"
-        value={task.name}
-        onChange={(e) => {
-          const newtask = { ...task };
-          newtask.name = e.target.value;
-          setTask(newtask);
-        }}
+        value={1}
+        onChange={(e) => {}}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
-            submit();
           }
         }}
       />
       {t && (
         <button
           onClick={() => {
-            setF.taskF(id);
-            setF.setTaskId("");
+            setF.setIsList(false);
+            setF.listF(id);
           }}
         >
           DELETE

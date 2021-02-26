@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react";
-import { DataContext } from "../data";
+import { DataContext, List } from "../data";
 import TaskView from "./TaskView";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import "../css/ListView.css";
@@ -8,10 +8,10 @@ interface Props {
   index: number;
   setF: any;
 }
-
+const width = "15vw";
 export default function ListView({ id, index, setF }: Props): ReactElement {
   const data = useContext(DataContext);
-  const listName = data.lists.get(id)?.name;
+  const listName = data.lists.get(id)?.name as string;
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -20,14 +20,21 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
           <div
             style={{
               margin: "0 1vw 0 1vw",
-              minWidth: "15vw",
             }}
           >
             <div
               {...provided.dragHandleProps}
-              style={{ fontSize: "1.5em", textAlign: "center" }}
+              style={{
+                width: width,
+                height: "2vh",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setF.setListId(id);
+                setF.setIsList(true);
+              }}
             >
-              {listName}
+              <div>{listName}</div>
             </div>
             <Droppable droppableId={id}>
               {(provided) => (
