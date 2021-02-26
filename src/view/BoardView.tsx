@@ -20,13 +20,31 @@ export default function BoardView({ boardId }: Props): ReactElement {
     tasks: new Map<string, Task>(),
     listIds: new Array<string>(),
   });
-  const [taskIdCounter, setTaskIdCounter] = useState(0);
-  const [listIdCounter, setListIdCounter] = useState(0);
-  const [isAdd, setIsAdd] = useState("");
+
   const [taskId, setTaskId] = useState("");
   const [listId, setListId] = useState("");
   const [taskIdC, setTaskIdC] = useState(0);
   const [listIdC, setListIdC] = useState(0);
+  const [isAdd, setIsAdd] = useState(false);
+  function taskF(id: string, task?: Task) {
+    const tasks = new Map(data.tasks);
+    const lists = new Map(data.lists);
+    if (task) {
+      tasks.set(id.toString(), task);
+      if (isAdd) {
+        lists.get(listId)?.taskIds.push(id.toString());
+        setTaskIdC((taskIdC) => taskIdC + 1);
+      }
+    } else {
+      tasks.delete(id);
+      const list = lists.get(listId)?.taskIds as string[];
+      list.splice(list.indexOf(id), 1);
+    }
+
+    setData({ tasks, lists, listIds: data.listIds });
+  }
+  const setF = { setTaskId, taskF, setListId, setIsAdd };
+
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
@@ -86,24 +104,6 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     }
   };
-  function taskF(id: string, task?: Task) {
-    const tasks = new Map(data.tasks);
-    const lists = new Map(data.lists);
-    if (task) {
-      tasks.set(id.toString(), task);
-      if (listId !== "") {
-        lists.get(listId)?.taskIds.push(id.toString());
-        setTaskIdC((taskIdC) => taskIdC + 1);
-      }
-    } else {
-      tasks.delete(id);
-      const list = lists.get(listId)?.taskIds as string[];
-      list.splice(list.indexOf(id), 1);
-    }
-
-    setData({ tasks, lists, listIds: data.listIds });
-  }
-  const setF = { setTaskId, taskF, setListId };
 
   return (
     <div>
@@ -122,10 +122,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
             )}
           </Droppable>
         </DragDropContext>
-        {taskId !== "" && (
-          <TaskDetailView id={taskId} setF={setF} isAdd={isAdd} />
-        )}
-        {isAdd && <TaskDetailView id={taskId} setF={setF} isAdd={isAdd} />}
+        {taskId !== "" && <TaskDetailView id={taskId} setF={setF} />}
       </DataProvider>
     </div>
   );

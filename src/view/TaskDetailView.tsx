@@ -4,18 +4,18 @@ import { Task, DataContext } from "../data";
 interface Props {
   id: string;
   setF: any;
-  isAdd: string;
 }
 
-export default function TaskDetailView({
-  id,
-  setF,
-  isAdd,
-}: Props): ReactElement {
+export default function TaskDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const t = data.tasks.get(id);
   const [task, setTask] = useState(t ? t : { name: "", subTasks: [] });
-
+  const submit = () => {
+    setF.taskF(id, task);
+    setF.setTaskId("");
+    setF.setListId("");
+    setF.setIsAdd(false);
+  };
   return (
     <div
       style={{
@@ -37,8 +37,7 @@ export default function TaskDetailView({
           margin: "0 0 0 auto",
         }}
         onClick={() => {
-          setF.taskF(id, task);
-          setF.setTaskId("");
+          submit();
         }}
       />
       <input
@@ -48,6 +47,11 @@ export default function TaskDetailView({
           const newtask = { ...task };
           newtask.name = e.target.value;
           setTask(newtask);
+        }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            submit();
+          }
         }}
       />
       {t && (
