@@ -20,6 +20,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
     listIds: new Array<string>(),
   });
   const [taskId, setTaskId] = useState("");
+  const [listId, setListId] = useState("");
   const [taskIdC, setTaskIdC] = useState(0);
   const [listIdC, setListIdC] = useState(0);
   const onDragEnd = (result: DropResult) => {
@@ -81,12 +82,22 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     }
   };
-  const taskF = (id: string, task: Task) => {
+  function taskF(id: string, task?: Task) {
     const tasks = new Map(data.tasks);
-    tasks.set(id, task);
-    setData({ tasks, lists: data.lists, listIds: data.listIds });
-  };
-  const setF = { setTaskId, taskF };
+    const lists = new Map(data.lists);
+    if (task) {
+      tasks.set(id.toString(), task);
+      if (listId !== "") {
+        lists.get(listId)?.taskIds.push(id.toString());
+        setTaskIdC((taskIdC) => taskIdC + 1);
+      }
+    }
+    console.log(lists);
+    console.log(tasks);
+
+    setData({ tasks, lists, listIds: data.listIds });
+  }
+  const setF = { setTaskId, taskF, setListId };
 
   return (
     <div>

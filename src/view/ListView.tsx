@@ -53,6 +53,7 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                       className="AddTaskButton"
                       onClick={() => {
                         setF.setTaskId(data.taskIdC);
+                        setF.setListId(id);
                       }}
                     >
                       <img

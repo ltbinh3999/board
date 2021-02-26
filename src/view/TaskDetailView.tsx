@@ -32,10 +32,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           margin: "0 0 0 auto",
         }}
         onClick={() => {
-          if (t) {
-            setF.taskF(id, task);
-          } else {
-          }
+          setF.taskF(id, task);
           setF.setTaskId("");
         }}
       />
