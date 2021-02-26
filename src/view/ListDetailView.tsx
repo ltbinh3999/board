@@ -9,7 +9,11 @@ interface Props {
 export default function ListDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const t = data.lists.get(id);
-  const [task, setTask] = useState(t ? t : { id: "", name: "", taskIds: [] });
+  const [list, setList] = useState(t ? t : { id: "", name: "", taskIds: [] });
+  const submit = () => {
+    setF.listF(id, list);
+    setF.setIsList(false);
+  };
   return (
     <div
       style={{
@@ -30,14 +34,21 @@ export default function ListDetailView({ id, setF }: Props): ReactElement {
           display: "block",
           margin: "0 0 0 auto",
         }}
-        onClick={() => {}}
+        onClick={() => {
+          submit();
+        }}
       />
       <input
         type="text"
-        value={1}
-        onChange={(e) => {}}
+        value={list.name}
+        onChange={(e) => {
+          const newList = { ...list };
+          newList.name = e.target.value;
+          setList(newList);
+        }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
+            submit();
           }
         }}
       />
