@@ -9,8 +9,10 @@ interface Props {
 
 export default function BoardView({ boardId }: Props): ReactElement {
   useEffect(() => {
-    const { name, lists, tasks, listIds } = getBoard(boardId);
+    const { name, lists, tasks, listIds, listIdC, taskIdC } = getBoard(boardId);
     setData({ lists, tasks, listIds });
+    setTaskIdC(taskIdC);
+    setListIdC(listIdC);
   }, []);
   const [data, setData] = useState({
     lists: new Map<string, List>(),
@@ -18,7 +20,8 @@ export default function BoardView({ boardId }: Props): ReactElement {
     listIds: new Array<string>(),
   });
   const [taskId, setTaskId] = useState("");
-
+  const [taskIdC, setTaskIdC] = useState(0);
+  const [listIdC, setListIdC] = useState(0);
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
@@ -78,11 +81,16 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     }
   };
-  const setF = { setTaskId };
+  const taskF = (id: string, task: Task) => {
+    const tasks = new Map(data.tasks);
+    tasks.set(id, task);
+    setData({ tasks, lists: data.lists, listIds: data.listIds });
+  };
+  const setF = { setTaskId, taskF };
 
   return (
     <div>
-      <DataProvider value={data}>
+      <DataProvider value={{ ...data, taskIdC, listIdC }}>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="all" direction="horizontal" type="column">
             {(provided) => (

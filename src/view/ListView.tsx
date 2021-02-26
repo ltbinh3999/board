@@ -49,7 +49,12 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                       />
                     ))}
                     {provided.placeholder}
-                    <div className="AddTaskButton">
+                    <div
+                      className="AddTaskButton"
+                      onClick={() => {
+                        setF.setTaskId(data.taskIdC);
+                      }}
+                    >
                       <img
                         src="add.png"
                         alt="add button"

@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 import { Task, DataContext } from "../data";
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
 
 export default function TaskDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
-  const task = data.tasks.get(id);
+  const t = data.tasks.get(id);
+  const [task, setTask] = useState(t ? t : { name: "", subTasks: [] });
 
   return (
     <div
@@ -31,11 +32,22 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           margin: "0 0 0 auto",
         }}
         onClick={() => {
+          if (t) {
+            setF.taskF(id, task);
+          } else {
+          }
           setF.setTaskId("");
         }}
       />
-      <div>Task name: {task?.name}</div>
-      <div>Sub tasks: {JSON.stringify(task?.subTasks)}</div>
+      <input
+        type="text"
+        value={task.name}
+        onChange={(e) => {
+          const newtask = { ...task };
+          newtask.name = e.target.value;
+          setTask(newtask);
+        }}
+      ></input>
     </div>
   );
 }

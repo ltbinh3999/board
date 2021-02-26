@@ -53,11 +53,15 @@ function getBoard(boardId: string) {
     listIds: ["l0", "l1", "l2"],
     tasks,
     lists,
+    taskIdC: tasks.size,
+    listIdC: lists.size,
   };
 }
 const DataContext = React.createContext({
   lists: new Map<string, List>(),
   tasks: new Map<string, Task>(),
+  taskIdC: 0,
+  listIdC: 0,
 });
 const DataProvider = DataContext.Provider;
 export { getBoard, DataContext, DataProvider };
