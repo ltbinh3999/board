@@ -44,7 +44,17 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           newtask.name = e.target.value;
           setTask(newtask);
         }}
-      ></input>
+      />
+      {t && (
+        <button
+          onClick={() => {
+            setF.taskF(id);
+            setF.setTaskId("");
+          }}
+        >
+          DELETE
+        </button>
+      )}
     </div>
   );
 }

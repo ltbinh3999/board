@@ -91,9 +91,11 @@ export default function BoardView({ boardId }: Props): ReactElement {
         lists.get(listId)?.taskIds.push(id.toString());
         setTaskIdC((taskIdC) => taskIdC + 1);
       }
+    } else {
+      tasks.delete(id);
+      const list = lists.get(listId)?.taskIds as string[];
+      list.splice(list.indexOf(id), 1);
     }
-    console.log(lists);
-    console.log(tasks);
 
     setData({ tasks, lists, listIds: data.listIds });
   }

@@ -46,6 +46,7 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                         depth={0}
                         index={i}
                         setF={setF}
+                        listId={id}
                       />
                     ))}
                     {provided.placeholder}
