@@ -4,6 +4,7 @@ import ListView from "./ListView";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import TaskDetailView from "./TaskDetailView";
 import ListDetailView from "./ListDetailView";
+import addButton from "../add.png";
 interface Props {
   boardId: string;
 }
@@ -139,7 +140,7 @@ export default function BoardView({ boardId }: Props): ReactElement {
                   {provided.placeholder}{" "}
                   <input
                     type="image"
-                    src="add.png"
+                    src={addButton}
                     alt="add button"
                     style={{
                       height: "1em",

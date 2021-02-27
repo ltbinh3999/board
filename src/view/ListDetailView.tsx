@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useState } from "react";
 import { DataContext } from "../data";
-
+import closeButton from "../close.png";
 interface Props {
   id: string;
   setF: any;
@@ -28,7 +28,7 @@ export default function ListDetailView({ id, setF }: Props): ReactElement {
     >
       <input
         type="image"
-        src="close.png"
+        src={closeButton}
         style={{
           height: "1em",
           display: "block",

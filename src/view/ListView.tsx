@@ -3,6 +3,7 @@ import { DataContext, List } from "../data";
 import TaskView from "./TaskView";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import "../css/ListView.css";
+import addButton from "../add.png";
 interface Props {
   id: string;
   index: number;
@@ -12,7 +13,7 @@ const width = "15vw";
 export default function ListView({ id, index, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const listName = data.lists.get(id)?.name as string;
-
+  const listLength = data.lists.get(id)?.taskIds.length;
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -28,13 +29,16 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                 width: width,
                 height: "2vh",
                 cursor: "pointer",
+                display: "flex",
+                justifyContent: "space-between",
               }}
               onClick={() => {
                 setF.setListId(id);
                 setF.setIsList(true);
               }}
             >
-              <div>{listName}</div>
+              <span>{listName}</span>
+              <span>{listLength}</span>
             </div>
             <Droppable droppableId={id}>
               {(provided) => (
@@ -66,7 +70,7 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                       }}
                     >
                       <img
-                        src="add.png"
+                        src={addButton}
                         alt="add button"
                         style={{
                           height: "1em",
