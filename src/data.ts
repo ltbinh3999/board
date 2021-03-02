@@ -1,4 +1,5 @@
 import React from "react";
+
 export interface Task {
   id: string;
   name: string;
@@ -11,6 +12,7 @@ export interface List {
   name: string;
   taskIds: string[];
 }
+
 export interface Board {
   id: string;
   name: string;
@@ -18,7 +20,7 @@ export interface Board {
   tasks: Map<string, Task>;
   lists: Map<string, List>;
 }
-//TODO: implement subtask Function
+
 function getBoard(boardId: string) {
   const addSubTask = (taskId: string, subTasksId: string) => {
     tasks.get(taskId)?.subTasks.push(subTasksId);
@@ -28,6 +30,8 @@ function getBoard(boardId: string) {
     name: `Sample task ${x}`,
     subTasks: [],
   }));
+  //Tomorrow date
+  taskArr[0].date= new Date(Date.now()+24*3600*1000);
   const tasks = new Map<string, Task>();
   taskArr.forEach((x) => {
     tasks.set(x.id, x);
@@ -56,6 +60,7 @@ function getBoard(boardId: string) {
     listIdC: lists.size,
   };
 }
+
 const DataContext = React.createContext({
   lists: new Map<string, List>(),
   tasks: new Map<string, Task>(),
@@ -63,4 +68,5 @@ const DataContext = React.createContext({
   listIdC: 0,
 });
 const DataProvider = DataContext.Provider;
+
 export { getBoard, DataContext, DataProvider };

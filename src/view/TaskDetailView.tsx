@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext, useState } from "react";
 import { DataContext } from "../data";
 import closeButton from "../close.png";
+
 interface Props {
   id: string;
   setF: any;
@@ -16,6 +17,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
     setF.setListId("");
     setF.setIsAdd(false);
   };
+
   return (
     <div
       style={{

@@ -5,7 +5,7 @@ interface Props {
   id: string;
   setF: any;
 }
-//FIXME: Refactor this and TaskDetailView to a DetailView component.
+
 export default function ListDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const t = data.lists.get(id);
@@ -14,6 +14,7 @@ export default function ListDetailView({ id, setF }: Props): ReactElement {
     setF.listF(id, list);
     setF.setIsList(false);
   };
+
   return (
     <div
       style={{

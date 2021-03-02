@@ -4,16 +4,18 @@ import TaskView from "./TaskView";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import "../css/ListView.css";
 import addButton from "../add.png";
+
 interface Props {
   id: string;
   index: number;
   setF: any;
 }
-const width = "15vw";
+
 export default function ListView({ id, index, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const listName = data.lists.get(id)?.name as string;
   const listLength = data.lists.get(id)?.taskIds.length;
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -26,7 +28,7 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
             <div
               {...provided.dragHandleProps}
               style={{
-                width: width,
+                width: "15vw",
                 height: "2vh",
                 cursor: "pointer",
                 display: "flex",

@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import TaskDetailView from "./TaskDetailView";
 import ListDetailView from "./ListDetailView";
 import addButton from "../add.png";
+
 interface Props {
   boardId: string;
 }

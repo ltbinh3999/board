@@ -27,6 +27,7 @@ export default function TaskView({
       listId={listId}
     />
   ));
+
   if (depth === 0) {
     return (
       <Draggable draggableId={id} index={index}>
