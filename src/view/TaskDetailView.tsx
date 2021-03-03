@@ -45,6 +45,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           submit();
         }}
       />
+
       <div>
         <input
           type="text"
@@ -61,18 +62,41 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           }}
         />
       </div>
-      <div>
-        <input
-          type="date"
-          value={task.date?.toISOString().substring(0, 10)}
-          onChange={(e) => {
-            const newTask = { ...task };
-            newTask.date = new Date(e.target.value);
-            setTask(newTask);
-            setF.taskF(id, newTask);
-          }}
-        ></input>
-      </div>
+
+      {task.hasOwnProperty("date") && (
+        <div>
+          <input
+            type="date"
+            value={task.date?.toISOString().substring(0, 10)}
+            onChange={(e) => {
+              const newTask = { ...task };
+              if (e.target.value === "") {
+                delete newTask.date;
+              } else {
+                newTask.date = new Date(e.target.value);
+              }
+
+              setTask(newTask);
+              setF.taskF(id, newTask);
+            }}
+          ></input>
+        </div>
+      )}
+      {!task.hasOwnProperty("date") && (
+        <div>
+          <button
+            onClick={() => {
+              const newTask = { ...task };
+              newTask.date = new Date();
+              setTask(newTask);
+              setF.taskF(id, newTask);
+            }}
+          >
+            Add Date
+          </button>
+        </div>
+      )}
+
       <div>
         {t && (
           <button
