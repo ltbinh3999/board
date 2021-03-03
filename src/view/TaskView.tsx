@@ -27,7 +27,12 @@ export default function TaskView({
       listId={listId}
     />
   ));
-
+  const taskInfo = <div>
+    <div>{task?.name}</div>
+    <div>{task?.date?.toDateString()}</div>
+    
+    
+  </div>
   if (depth === 0) {
     return (
       <Draggable draggableId={id} index={index}>
@@ -49,8 +54,7 @@ export default function TaskView({
                 setF.setListId(listId);
               }}
             >
-              {task?.name}
-              {subTaskViews}
+              {taskInfo}
             </div>
           </div>
         )}
@@ -59,7 +63,7 @@ export default function TaskView({
   } else {
     return (
       <div style={{ marginLeft: depth * 10 }}>
-        {task?.name}
+        {taskInfo}
         {subTaskViews}
       </div>
     );

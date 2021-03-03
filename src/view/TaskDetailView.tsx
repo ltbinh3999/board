@@ -10,7 +10,10 @@ interface Props {
 export default function TaskDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   const t = data.tasks.get(id);
-  const [task, setTask] = useState(t ? t : { name: "", subTasks: [] });
+  const [task, setTask] = useState(
+    t ? t : { name: "", subTasks: [], date: new Date() }
+  );
+  const [isDate, setIsDate] = useState(false);
   const submit = () => {
     setF.taskF(id, task);
     setF.setTaskId("");
@@ -42,30 +45,46 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           submit();
         }}
       />
-      <input
-        type="text"
-        value={task.name}
-        onChange={(e) => {
-          const newtask = { ...task };
-          newtask.name = e.target.value;
-          setTask(newtask);
-        }}
-        onKeyPress={(e) => {
-          if (e.key === "Enter") {
-            submit();
-          }
-        }}
-      />
-      {t && (
-        <button
-          onClick={() => {
-            setF.taskF(id);
-            setF.setTaskId("");
+      <div>
+        <input
+          type="text"
+          value={task.name}
+          onChange={(e) => {
+            const newtask = { ...task };
+            newtask.name = e.target.value;
+            setTask(newtask);
           }}
-        >
-          DELETE
-        </button>
-      )}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              submit();
+            }
+          }}
+        />
+      </div>
+      <div>
+        <input
+          type="date"
+          value={task.date?.toISOString().substring(0, 10)}
+          onChange={(e) => {
+            const newTask = { ...task };
+            newTask.date = new Date(e.target.value);
+            setTask(newTask);
+            setF.taskF(id, newTask);
+          }}
+        ></input>
+      </div>
+      <div>
+        {t && (
+          <button
+            onClick={() => {
+              setF.taskF(id);
+              setF.setTaskId("");
+            }}
+          >
+            DELETE
+          </button>
+        )}
+      </div>
     </div>
   );
 }

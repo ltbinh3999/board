@@ -31,7 +31,10 @@ function getBoard(boardId: string) {
     subTasks: [],
   }));
   //Tomorrow date
-  taskArr[0].date= new Date(Date.now()+24*3600*1000);
+  taskArr[2].date= new Date(Date.now()+2*24*3600*1000);
+  taskArr[4].date= new Date(Date.now()+4*24*3600*1000);
+  taskArr[9].date= new Date(Date.now()+24*3600*1000);
+  
   const tasks = new Map<string, Task>();
   taskArr.forEach((x) => {
     tasks.set(x.id, x);
