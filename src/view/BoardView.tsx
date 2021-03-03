@@ -42,7 +42,6 @@ export default function BoardView({ boardId }: Props): ReactElement {
       }
     } else {
       tasks.delete(id);
-      console.log(listId);
       const list = lists.get(listId)?.taskIds as string[];
       list.splice(list.indexOf(id), 1);
     }
@@ -130,7 +129,6 @@ export default function BoardView({ boardId }: Props): ReactElement {
 
   return (
     <div>
-      {listId}
       <DataProvider value={{ ...data, taskIdC, listIdC }}>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="all" direction="horizontal" type="column">
