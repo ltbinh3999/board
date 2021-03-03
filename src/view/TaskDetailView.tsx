@@ -11,7 +11,8 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
   let t = data.tasks.get(id);
   useEffect(() => {
-    setTask(data.tasks.get(id) as Task);
+    t = data.tasks.get(id);
+    setTask(t ? t : { name: "", subTasks: [], date: new Date() });
   }, [id]);
 
   const [task, setTask] = useState(
@@ -79,9 +80,10 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
               } else {
                 newTask.date = new Date(e.target.value);
               }
-
               setTask(newTask);
-              setF.taskF(id, newTask);
+              if (parseInt(id) < data.taskIdC) {
+                setF.taskF(id, newTask);
+              }
             }}
           ></input>
         </div>
