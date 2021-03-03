@@ -1,5 +1,5 @@
-import React, { ReactElement, useContext, useState } from "react";
-import { DataContext } from "../data";
+import React, { ReactElement, useContext, useState, useEffect } from "react";
+import { DataContext, Task } from "../data";
 import closeButton from "../close.png";
 
 interface Props {
@@ -9,11 +9,15 @@ interface Props {
 
 export default function TaskDetailView({ id, setF }: Props): ReactElement {
   const data = useContext(DataContext);
-  const t = data.tasks.get(id);
+  let t = data.tasks.get(id);
+  useEffect(() => {
+    setTask(data.tasks.get(id) as Task);
+  }, [id]);
+
   const [task, setTask] = useState(
     t ? t : { name: "", subTasks: [], date: new Date() }
   );
-  const [isDate, setIsDate] = useState(false);
+
   const submit = () => {
     setF.taskF(id, task);
     setF.setTaskId("");
@@ -82,6 +86,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
           ></input>
         </div>
       )}
+
       {!task.hasOwnProperty("date") && (
         <div>
           <button
@@ -105,8 +110,7 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
               setF.setTaskId("");
             }}
           >
-            {" "}
-            n DELETE
+            DELETE
           </button>
         )}
       </div>
