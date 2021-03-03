@@ -1,6 +1,8 @@
 import React, { ReactElement, useContext } from "react";
 import { DataContext } from "../data";
 import { Draggable } from "react-beautiful-dnd";
+import checkMark from "../check-mark.png";
+import "../css/ImageButton.css";
 interface Props {
   id: string;
   depth: number;
@@ -27,12 +29,25 @@ export default function TaskView({
       listId={listId}
     />
   ));
-  const taskInfo = <div>
-    <div>{task?.name}</div>
-    <div>{task?.date?.toDateString()}</div>
-    
-    
-  </div>
+  const taskInfo = (
+    <div>
+      <div>
+        <input
+          className="ImageButton"
+          type="image"
+          src={checkMark}
+          style={{ height: "1em" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setF.taskF(id);
+            setF.setTaskId("");
+          }}
+        ></input>
+        <span style={{ marginLeft: "5%" }}>{task?.name}</span>
+      </div>
+      <div>{task?.date?.toDateString()}</div>
+    </div>
+  );
   if (depth === 0) {
     return (
       <Draggable draggableId={id} index={index}>

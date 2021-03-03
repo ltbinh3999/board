@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from "react";
 import { DataContext, List } from "../data";
 import TaskView from "./TaskView";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import "../css/ListView.css";
+import "../css/ImageButton.css";
 import addButton from "../add.png";
 
 interface Props {
@@ -23,6 +23,9 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
           <div
             style={{
               margin: "0 1vw 0 1vw",
+            }}
+            onMouseEnter={() => {
+              setF.setListId(id);
             }}
           >
             <div
@@ -64,7 +67,7 @@ export default function ListView({ id, index, setF }: Props): ReactElement {
                     ))}
                     {provided.placeholder}
                     <div
-                      className="AddTaskButton"
+                      className="ImageButton"
                       onClick={() => {
                         setF.setTaskId(data.taskIdC);
                         setF.setListId(id);

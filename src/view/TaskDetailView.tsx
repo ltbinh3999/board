@@ -105,7 +105,8 @@ export default function TaskDetailView({ id, setF }: Props): ReactElement {
               setF.setTaskId("");
             }}
           >
-            DELETE
+            {" "}
+            n DELETE
           </button>
         )}
       </div>
