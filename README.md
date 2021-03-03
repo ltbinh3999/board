@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+# Board-based personal todo list
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+This is a front end of a more flexible to-do list. Instead of having one giant list for everything, users can have multiple lists represented by columns on board. Users can freely move tasks between lists, create new ones, update old ones and mark them as completed or remove them.
 
-In the project directory, you can run:
+## Demo
 
-### `npm start`
+Here is a [demo](https://ltbinh3999.github.io/board/).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+- CRUD operations on task
+  
+- CRUD operations on list
+  
+- Free movement and order of lists and tasks
+  
+- Deadline date on task
+  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Todos
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Calendar view
+  
+- Subtask system
+  
+- Multi board
+  
+- Backend (most likely ExpressJS and MongoDB)
+  
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+- Clone or download the repor
+  
+- `npm install` to install all dependancies
+  
+- `npm start` to start the application at `localhost:3000` with live reloading enable
+  
+- Choosing where to [deploy](https://create-react-app.dev/docs/deployment/)
+  
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Technology
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Typescript](https://www.typescriptlang.org/) - Adding type to Javascript for an easier time of developing
+  
+- [ReactJS](https://reactjs.org/) - Component-based JavaScript library to build user interface
+  
+- [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) - Drag and drop module for React
